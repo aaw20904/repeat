@@ -1,8 +1,10 @@
 let globalIndexedStore = null;
 
 
-window.onload= async function() {
-    globalIndexedStore = await startDB();
+window.onload=  function() {
+
+    startDB()
+    .then(x=>{globalIndexedStore=x});
     let btnSave = document.querySelector('#btnSave');
     let btnFind = document.querySelector('#btnFind');
     let btnRemove = document.querySelector('#btnRemove');
@@ -77,7 +79,7 @@ window.onload= async function() {
 
 
 function startDB(){
-    new Promise((resolve, reject) => {
+   return new Promise((resolve, reject) => {
         
     /*******************IndexedDB******************************/
     /**for the start you can checking - is the browser supporting IndexeDB?*/
@@ -133,7 +135,7 @@ function startDB(){
 async function addBjt(par={modell:'kt315',voltage:30}, db) {
     return new Promise((resolve, reject) => {
         //start transaction
-        var transaction = db.startTransaction(['bjt'],'readwrite');
+        var transaction = db.transaction(['bjt'],'readwrite');
         //ask for the object store
         let store = transaction.objectStore('bjt')
         //perform and add
@@ -170,7 +172,7 @@ async function deleteBjt (modell,db) {
 async function findAll(db) {
     let arrayOfResults = [];
     //start a transaction
-    let transactoin = db.startTransaction(['bjt'],'readonly');
+    let transactoin = db.transaction(['bjt'],'readonly');
     //ask a store
     let store = transactoin.objectStore('bjt');
     //get a cursor for iteration
@@ -180,7 +182,7 @@ async function findAll(db) {
         let result = r.target.result;
         if (result) {
             //when the item exists - push it to the array
-            recordsList.push(result.value);
+            arrayOfResults.push(result.value);
             //continue iteration
             result.continue();
         } else {
