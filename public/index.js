@@ -151,6 +151,12 @@ async function addBjt(par={modell:'kt315',voltage:30}, db) {
     });
 }
 
+async function findBjtByVoltage(arg={from:10, to:100},db) {
+    return new Promise((resolve, reject) => {
+        
+    });
+}
+
 async function deleteBjt (modell,db) {
     return new Promise((resolve, reject) => {
         //start a transaction
@@ -170,7 +176,8 @@ async function deleteBjt (modell,db) {
 }
 
 async function findAll(db) {
-    let arrayOfResults = [];
+    return new Promise((resolve, reject) => {
+         let arrayOfResults = [];
     //start a transaction
     let transactoin = db.transaction(['bjt'],'readonly');
     //ask a store
@@ -198,6 +205,8 @@ async function findAll(db) {
     transactoin.onerror=(e) =>{
         reject(e)
     }
+    });
+   
 
 }
 
